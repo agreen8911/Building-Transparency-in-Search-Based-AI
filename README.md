@@ -20,6 +20,8 @@ Final project for our DATA 780 Machine Learning class in the University of North
 
 1.  `git clone` && `cd` into the project directory
 
+## Data Creation Process
+
 ## Database Schema & Wireframes
 
 
