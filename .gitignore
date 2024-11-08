@@ -1,4 +1,4 @@
 app/
 server/
 server/.env
-data/__pycache__
+data/__pycache__/
