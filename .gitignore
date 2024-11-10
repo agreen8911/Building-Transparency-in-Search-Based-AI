@@ -2,3 +2,4 @@ app/
 server/
 server/.env
 data/__pycache__/
+models/basic_cluster.ipynb
