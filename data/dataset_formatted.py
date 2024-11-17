@@ -11,5 +11,3 @@ df.columns = df.columns.str.strip()
 df['Attributed Sources'] = df['Attributed Sources'].str.replace('"', '')
 
 df = df[df['LLM'] != 'grok']
-
-print(df.head())
