@@ -3,4 +3,4 @@ server/
 server/.env
 data/__pycache__/
 models/basic_cluster.ipynb
-models/transformed_df.py
+models/__pycache__
