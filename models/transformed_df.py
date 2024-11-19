@@ -64,3 +64,5 @@ url_features = pd.DataFrame(mlb.fit_transform(df_test['Attributed Sources']),
 df_test = pd.concat([df_test, url_features], axis=1)
 
 df_test.drop(columns=['Attributed Sources'], inplace=True)
+
+df_test.to_csv('/Users/adamgreen/Desktop/UNC MADS/DATA_780_ML/final_project/DATA_780_Final_Project/models/transformed_df.csv', index=False)
