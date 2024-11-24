@@ -1,13 +1,24 @@
-# _DATA 780 Final Project_ 
+# MASTERS MACHINE LEARNING (DATA 780) Final Project </br></br> _Building Trust in Search-Based AI:  Toward a Credibility Benchmark_
 </br>
 
 ## About
 
 Final project for our DATA 780 Machine Learning class in the University of North Carolina's Master of Applied Data Science (UNC MADS) program.
 
+The primary purpose of this project is to evaluate variations in source attribution of search-based
+large language models (LLMs) in open domain question answering (ODQA).  We focus on the evaluation of the quality and variation in explicit source attribution across
+different LLMs and the changes to source attribution patterns over time. We propose a "trust score"
+and application to compare the source attribution
+performance of various models and products.
+
+## Project Objectives:
+* Evaluate source attribution in search-based large language models.
+* Evaluate source credibility as well as how the LLM represents the source information.
+* Contrast patterns in source attribution and source reliability for various LLMs.
+
 
                 
-## Contributors
+## Creators
 
 |                                                     [Adam Green](https://www.linkedin.com/in/agreen01/)                                                     |                                                   [Christopher Oxner](https://www.linkedin.com/in/chrisoxner/)                                                    |                                               [Nicole Petroski](https://www.linkedin.com/in/nicolepetroski/)                                               |                   
 | :----------------------------------------------------------------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------------------------------------------------------------------: | 
@@ -15,15 +26,5 @@ Final project for our DATA 780 Machine Learning class in the University of North
 |   [<img src="https://user-images.githubusercontent.com/36062933/108450440-38656600-7233-11eb-9ed0-34ecedcae435.png" width="20"> ](https://github.com/agreen8911)   |   [<img src="https://user-images.githubusercontent.com/36062933/108450440-38656600-7233-11eb-9ed0-34ecedcae435.png" width="20"> ](https://github.com/OxDat)    |   [<img src="https://user-images.githubusercontent.com/36062933/108450440-38656600-7233-11eb-9ed0-34ecedcae435.png" width="20"> ](https://github.com/npetroski)    |   
 |                  [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="20"> ](https://www.linkedin.com/in/agreen01/)                   |                [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="20"> ](https://www.linkedin.com/in/chrisoxner/)                |              [ <img src="https://static.licdn.com/sc/h/al2o9zrvru7aqj8e1x2rzsrca" width="20"> ](https://www.linkedin.com/in/nicolepetroski/)              |               
 
-## Getting Started Locally
-
-
-1.  `git clone` && `cd` into the project directory
-
 ## Data Creation Process
-
-## Database Schema & Wireframes
-
-
-## Project Naming Conventions:
 
