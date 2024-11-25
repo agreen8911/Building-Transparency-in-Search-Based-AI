@@ -2,5 +2,7 @@ app/
 server/
 server/.env
 data/__pycache__/
-models/basic_cluster.ipynb
 models/__pycache__
+models/fine_tuned_model
+models/logs/
+models/results/
