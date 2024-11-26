@@ -89,7 +89,7 @@ Source Inclusion = +5 points</br>
 Source Accessibility = +1 point for some links are functional, and +2 points if all links are functional</br></br>
 Source Pool Diversity = +1 point per unique source provided in the model's response</br></br>
 Multi-Modal Enrichment = +1 point if the model provides a response (some models did not provide answers to certain questions, such as political questions), and +2 if they provided multi-modal sources</br></br>
-Source Alignment = not included in scoring system as this stage of the project as more research is needed
+Source Alignment = not included in scoring system at this stage of the project as more research is needed
 
 ## Model Testing
 
