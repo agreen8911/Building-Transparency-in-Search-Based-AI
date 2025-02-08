@@ -1,6 +1,5 @@
-app/
-server/
 server/.env
+server/venv/
 data/__pycache__/
 models/__pycache__
 models/fine_tuned_model
