@@ -49,7 +49,7 @@ def gemini_chat():
         messages = request.json['messages']
         prompt = " ".join([m['content'] for m in messages])
         response = client_google.models.generate_content(
-            model="gemini-2.0-flash", contents="Explain how AI works"
+            model="gemini-2.0-flash", contents=prompt
         )
         return jsonify({
             "content": response.text,
@@ -88,12 +88,30 @@ def all_chat():
             })
         try:
             prompt = " ".join([m['content'] for m in messages])
-            gemini_response = client_google.models.generate_content(
-                model="gemini-2.0-flash", contents="Explain how AI works"
+            response = client_google.models.generate_content(
+                model='gemini-2.0-flash',
+                contents=prompt,
+                config=types.GenerateContentConfig(
+                    tools=[types.Tool(
+                        google_search=types.GoogleSearchRetrieval
+                    )]
+                )
             )
+            # Extract citations from grounding_metadata of the first candidate
+            citations = []
+            if response.candidates and len(response.candidates) > 0:
+                candidate = response.candidates[0]
+                grounding = candidate.grounding_metadata
+                if grounding and grounding.grounding_chunks:
+                    citations = [
+                        {"uri": chunk.web.uri, "title": chunk.web.title}
+                        for chunk in grounding.grounding_chunks
+                        if chunk.web and getattr(chunk.web, "uri", None)
+                    ]
+            
             responses.append({
-                "content": gemini_response.text,
-                "citations": [],
+                "content": response.text,
+                "citations": citations,
                 "model": "gemini"
             })
         except Exception as e:

@@ -212,7 +212,7 @@ const Home = () => {
                     {isExpanded ? "Show less" : "Show more..."}
                   </button>
                 )}
-                <div>
+                {/* <div>
                   <p className="mt-4 font-bold underline text-sm">
                     Sources ({data.citations.length})
                   </p>
@@ -231,7 +231,7 @@ const Home = () => {
                       })}
                     </ul>
                   )}
-                </div>
+                </div> */}
               </div>
             )}
           </div>
@@ -263,7 +263,7 @@ const Home = () => {
                     {isExpanded ? "Show less" : "Show more..."}
                   </button>
                 )}
-                <div>
+                {/* <div>
                   <p className="mt-4 font-bold">Sources:</p>
                   {data.citations && (
                     <ul className="mt-2 text-xs">
@@ -280,7 +280,7 @@ const Home = () => {
                       })}
                     </ul>
                   )}
-                </div>
+                </div> */}
               </div>
             )}
           </div>
