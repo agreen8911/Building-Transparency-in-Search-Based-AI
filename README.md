@@ -1,9 +1,7 @@
-# Machine Learning (DATA 780) Final Project for UNC's Master of Applied Data Science Program</br></br> _Building Trust in Search-Based AI:  Toward a Credibility Benchmark_
+# _Building Trust in Search-Based AI:  Toward a Credibility Benchmark_
 </br>
 
 ## About
-
-Final project for our DATA 780 Machine Learning class in the University of North Carolina's Master of Applied Data Science (UNC MADS) program.
 
 The primary purpose of this project is to evaluate variations in source attribution of search-based
 large language models (LLMs) in open domain question answering (ODQA).  We focus on the evaluation of the quality and variation in explicit source attribution across
