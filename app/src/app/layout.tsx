@@ -30,8 +30,8 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}
       >
         <div className="flex flex-col min-h-screen">
-          <main className="flex-1 w-full">{children}</main>
-          <footer className="text-center p-4 w-full bg-white text-black border border-black font-bold text-md mt-auto">
+          <main className="flex-1 w-full bg-[#0b5394]">{children}</main>
+          <footer className="text-center px-4 w-full bg-white text-black border border-black font-bold text-sm mt-auto">
             <p>© 2024 Trust but Verify AI. All rights reserved.</p>
           </footer>
         </div>
