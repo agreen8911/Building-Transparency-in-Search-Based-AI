@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { RingLoader } from "react-spinners";
 import ModelResultsTile from "./components/ModelResultsSlider";
 
@@ -13,11 +13,31 @@ export interface ApiResponse {
   }[];
 }
 
+function useMediaQuery({ query }: { query: string }) {
+  const [matches, setMatches] = useState(false);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia(query);
+    const handler = (event: MediaQueryListEvent) => setMatches(event.matches);
+
+    setMatches(mediaQuery.matches);
+    mediaQuery.addEventListener("change", handler);
+
+    return () => {
+      mediaQuery.removeEventListener("change", handler);
+    };
+  }, [query]);
+
+  return matches;
+}
+
 const Home = () => {
   const [data, setData] = useState<ApiResponse | null>(null);
   const [userQuestion, setUserQuestion] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
 
   const messages = [
     {
@@ -50,6 +70,7 @@ const Home = () => {
       );
 
       const data = await response.json();
+      console.log("data", data);
       if (!response.ok) {
         throw new Error(data.error || "Failed to fetch response");
       }
@@ -68,7 +89,7 @@ const Home = () => {
   }
 
   return (
-    <div className="pb-12 h-full">
+    <div className="h-full">
       {loading && (
         <div className="flex flex-col gap-6 justify-center items-center h-screen">
           <RingLoader color={"white"} loading={loading} size={70} />
@@ -76,7 +97,7 @@ const Home = () => {
         </div>
       )}
 
-      <div className="bg-white flex items-center justify-between px-12">
+      <div className="bg-white flex items-center text-center justify-between px-5 py-8 sm:px-12">
         <Image
           src="/public/images/placeholder_logo.png"
           alt="logo"
@@ -84,19 +105,22 @@ const Home = () => {
           height={50}
           style={{ backgroundColor: "#4B9CD3" }}
         />
-        <h1 className="font-bold text-[#d15700] flex w-full h-24 pl-12 items-center text-6xl">
-          Seeker
+        <h1 className="font-bold text-[#d15700] flex w-full sm:py-4 sm:h-24 pl-6 sm:pl-12 items-center text-4xl xl:text-6xl">
+          Seeker <span className="italic">AI</span>
         </h1>
       </div>
-      <div className="px-12 pb-8 bg-white">
+      <div className="sm:px-12 pb-8 bg-white">
         <div className="w-full h-fit flex flex-col px-4 pb-4 rounded-xl bg-white">
           <label className="flex flex-col mt-4"></label>
           <div className="relative shadow-xl shadow-b-2xl">
             <input
               type="text"
-              className="w-full border text-black rounded-lg border-black px-2 sm:px-6 bg-white placeholder:flex placeholder:items-center placeholder:italic h-12 leading-4 placeholder-wrap break-words"
-              placeholder="Got a question? See how different models respond and check the
-                information source..."
+              className="w-full border text-black rounded-lg border-black pl-2 pr-8 sm:px-6 bg-white placeholder:flex placeholder:items-center placeholder:italic h-12 leading-4 placeholder-wrap break-words"
+              placeholder={
+                isMobile
+                  ? "Got a question?..."
+                  : "Got a question? See how different models respond and check the information source..."
+              }
               value={userQuestion}
               onChange={(e) => setUserQuestion(e.target.value)}
               onKeyDown={(e) => {
@@ -115,7 +139,7 @@ const Home = () => {
           </div>
         </div>
       </div>
-      <ModelResultsTile data={data?.responses || []} />
+      {data && <ModelResultsTile data={data?.responses || []} />}
     </div>
   );
 };

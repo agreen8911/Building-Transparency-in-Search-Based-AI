@@ -14,8 +14,9 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Trust but Verify AI",
-  description: "Trust but Verify AI",
+  title: "Seeker AI",
+  description:
+    "Seeker AI assists in assessing llm source attribution capabilities.",
 };
 
 export default function RootLayout({
@@ -32,7 +33,7 @@ export default function RootLayout({
         <div className="flex flex-col min-h-screen">
           <main className="flex-1 w-full bg-[#0b5394]">{children}</main>
           <footer className="text-center px-4 w-full bg-white text-black border border-black font-bold text-sm mt-auto">
-            <p>© 2024 Trust but Verify AI. All rights reserved.</p>
+            <p>© 2024 Seeker AI. All rights reserved.</p>
           </footer>
         </div>
       </body>
