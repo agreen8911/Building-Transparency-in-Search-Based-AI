@@ -29,7 +29,7 @@ def perplexity_chat():
     try:
         messages = request.json['messages']
         response = client_openai.chat.completions.create(
-            model="llama-3.1-sonar-large-128k-online",
+            model="sonar",
             messages=messages
         )
         content = response.choices[0].message.content
@@ -37,7 +37,7 @@ def perplexity_chat():
         return jsonify({
             "content": content,
             "citations": citations,
-            "model": "perplexity"
+            "model": "Perplexity"
         })
     except Exception as e:
         logging.error(f"Error in perplexity_chat: {e}")
@@ -54,7 +54,7 @@ def gemini_chat():
         return jsonify({
             "content": response.text,
             "citations": [],
-            "model": "gemini"
+            "model": "Gemini"
         })
     except Exception as e:
         logging.error(f"Error in gemini_chat: {e}")
@@ -70,20 +70,20 @@ def all_chat():
         responses = []
         try:
             perplexity_response = client_openai.chat.completions.create(
-                model="llama-3.1-sonar-large-128k-online",
+                model="sonar",
                 messages=messages
             )
             responses.append({
                 "content": perplexity_response.choices[0].message.content,
                 "citations": perplexity_response.citations if hasattr(perplexity_response, 'citations') else [],
-                "model": "perplexity"
+                "model": "Perplexity"
             })
         except Exception as e:
             logging.error(f"Error in perplexity response: {e}")
             responses.append({
                 "content": "Error getting response",
                 "citations": [],
-                "model": "perplexity",
+                "model": "Perplexity",
                 "error": str(e)
             })
         try:
@@ -112,14 +112,14 @@ def all_chat():
             responses.append({
                 "content": response.text,
                 "citations": citations,
-                "model": "gemini"
+                "model": "Gemini"
             })
         except Exception as e:
             logging.error(f"Error in gemini response: {e}")
             responses.append({
                 "content": "Error getting response",
                 "citations": [],
-                "model": "gemini",
+                "model": "Gemini",
                 "error": str(e)
             })
         return jsonify({"responses": responses})
