@@ -98,7 +98,6 @@ def all_chat():
                 )
             )
             # Extract citations from grounding_metadata of the first candidate
-            print('response', response)
             citations = []
             if response.candidates and len(response.candidates) > 0:
                 candidate = response.candidates[0]
