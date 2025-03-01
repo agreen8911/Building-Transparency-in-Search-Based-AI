@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { RingLoader } from "react-spinners";
 import ModelResultsTile from "./components/ModelResultsSlider";
+import Link from "next/link";
 
 export interface ApiResponse {
   responses: {
@@ -13,7 +14,7 @@ export interface ApiResponse {
   }[];
 }
 
-function useMediaQuery({ query }: { query: string }) {
+export const useMediaQuery = ({ query }: { query: string }) => {
   const [matches, setMatches] = useState(false);
 
   useEffect(() => {
@@ -29,7 +30,7 @@ function useMediaQuery({ query }: { query: string }) {
   }, [query]);
 
   return matches;
-}
+};
 
 const Home = () => {
   const [data, setData] = useState<ApiResponse | null>(null);
@@ -89,7 +90,7 @@ const Home = () => {
   }
 
   return (
-    <div className="h-full">
+    <div className="h-screen">
       {loading && (
         <div className="flex flex-col gap-6 justify-center items-center h-screen">
           <RingLoader color={"white"} loading={loading} size={70} />
@@ -97,21 +98,30 @@ const Home = () => {
         </div>
       )}
 
-      <div className="bg-white flex items-center text-center justify-between px-5 py-8 sm:px-12">
-        <Image
-          src="/public/images/placeholder_logo.png"
-          alt="logo"
-          width={50}
-          height={50}
-          style={{ backgroundColor: "#4B9CD3" }}
-        />
-        <h1 className="font-bold text-[#d15700] flex w-full sm:py-4 sm:h-24 pl-6 sm:pl-12 items-center text-4xl xl:text-6xl">
-          Seeker <span className="italic">AI</span>
-        </h1>
+      <div className="bg-white flex flex-col gap-8 sm:flex-row items-center text-center justify-between px-5 py-8 sm:px-12">
+        <div className="flex items-center">
+          <Image
+            src="/public/images/placeholder_logo.png"
+            alt="logo"
+            width={50}
+            height={50}
+            style={{ backgroundColor: "#4B9CD3" }}
+            className="w-12 h-12"
+          />
+          <h1 className="font-bold text-[#d15700] flex w-fit sm:py-4 sm:h-24 pl-2 sm:pl-4 xl:pl-12 items-center text-4xl sm:text-5xl xl:text-6xl">
+            Seeker<span className="italic">AI</span>
+          </h1>
+        </div>
+        <Link
+          href="/visualization"
+          className="text-white w-4/5 p-2 text-xs sm:text-base font-semibold font-sans bg-[#0b5394] sm:w-1/3 xl:w-fit xl:p-4 rounded-xl shadow-2xl flex items-center"
+        >
+          Check Out the Evolution of Information Visualization
+        </Link>
       </div>
       <div className="sm:px-12 pb-8 bg-white">
         <div className="w-full h-fit flex flex-col px-4 pb-4 rounded-xl bg-white">
-          <label className="flex flex-col mt-4"></label>
+          <label className="flex flex-col sm:mt-4" />
           <div className="relative shadow-xl shadow-b-2xl">
             <input
               type="text"

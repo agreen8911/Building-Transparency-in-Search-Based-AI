@@ -180,8 +180,8 @@ const ModelResultsSlider = ({ data }: ModelResultsSliderProps) => {
     <div className="flex flex-col gap-10 sm:block w-full px-5 sm:px-12 py-10 sm:py-20">
       {isMobile ? (
         data.map((response, index) => (
-          <div key={index} className="px-2 min-h-[300px]">
-            <div className="bg-white rounded-lg shadow-2xl p-4 h-[300px] overflow-scroll">
+          <div key={index} className="px-2 sm:min-h-[300px]">
+            <div className="bg-white rounded-lg shadow-2xl p-4 h-[400px] sm:h-[300px] overflow-scroll">
               <h3 className="text-black font-semibold text-4xl text-center">
                 {response.model}
               </h3>
