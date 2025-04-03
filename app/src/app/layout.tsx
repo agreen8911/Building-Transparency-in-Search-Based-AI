@@ -1,6 +1,8 @@
-import type { Metadata } from "next";
+"use client";
+
 import localFont from "next/font/local";
 import "./globals.css";
+import { DataProvider } from "./context/DataContext";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -13,12 +15,6 @@ const geistMono = localFont({
   weight: "100 900",
 });
 
-export const metadata: Metadata = {
-  title: "Seeker AI",
-  description:
-    "Seeker AI assists in assessing llm source attribution capabilities.",
-};
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -26,16 +22,20 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="min-h-screen flex flex-col">
-      <head>{/* <link rel="icon" href="/favicon.ico" /> */}</head>
+      <head>
+        <link rel="icon" href="/images/seekerai_logo.png" />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}
       >
-        <div className="flex flex-col min-h-screen">
-          <main className="flex-1 w-full bg-[#0b5394]">{children}</main>
-          <footer className="text-center px-4 w-full bg-white text-black font-bold text-sm mt-auto">
-            <p>© 2024 SeekerAI. All rights reserved.</p>
-          </footer>
-        </div>
+        <DataProvider>
+          <div className="flex flex-col min-h-screen">
+            <main className="flex-1 w-full">{children}</main>
+            <footer className="text-center px-4 py-4 w-full bg-white text-black font-bold text-sm mt-auto">
+              <p>© 2024 SeekerAI. All rights reserved.</p>
+            </footer>
+          </div>
+        </DataProvider>
       </body>
     </html>
   );
