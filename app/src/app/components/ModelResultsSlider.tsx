@@ -1,25 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-
-function useMediaQuery({ query }: { query: string }) {
-  const [matches, setMatches] = useState(false);
-
-  useEffect(() => {
-    const mediaQuery = window.matchMedia(query);
-    const handler = (event: MediaQueryListEvent) => setMatches(event.matches);
-
-    setMatches(mediaQuery.matches);
-    mediaQuery.addEventListener("change", handler);
-
-    return () => {
-      mediaQuery.removeEventListener("change", handler);
-    };
-  }, [query]);
-
-  return matches;
-}
+import { useMediaQuery } from "../context/DataContext";
 
 interface modelResponseResults {
   model: string;
@@ -74,12 +57,49 @@ interface ModelResultsSliderProps {
 }
 
 const ModelResultsSlider = ({ data }: ModelResultsSliderProps) => {
-  // console.log("data", data);
   const [expandedStates, setExpandedStates] = useState<boolean[]>(
     new Array(data.length).fill(false)
   );
+  const [showModal, setShowModal] = useState(false);
 
   const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
+
+  const TrustScoreModal = () => (
+    <div className="fixed inset-0 flex items-center justify-center z-50">
+      <div
+        className="absolute inset-0 bg-black opacity-50"
+        onClick={() => setShowModal(false)}
+      ></div>
+      <div className="bg-white rounded-lg p-6 shadow-xl z-10 max-w-xl">
+        <h3 className="text-xl font-bold mb-3 text-[#0b5394]">
+          Trust Score Explained
+        </h3>
+        <p className="mb-4">
+          To help users verify the accuracy of the information returned for
+          their questions, we created a &apos;Trust Score&apos;.
+        </p>
+        <p className="mb-2">A trust score is calculated based on:</p>
+        <ul className="mb-4 list-disc pl-5">
+          <li className="mb-1">
+            Number of citations provided (5 points if citations are provided)
+          </li>
+          <li className="mb-1">
+            Diversity of sources (1 point per unique domain)
+          </li>
+        </ul>
+        <p className="mb-4">
+          Higher scores suggest more verifiable information with diverse
+          sources.
+        </p>
+        <button
+          onClick={() => setShowModal(false)}
+          className="bg-[#0b5394] text-white px-4 py-2 rounded-lg hover:bg-[#084378] transition-colors"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  );
 
   const toggleExpanded = (index: number) => {
     const newStates = [...expandedStates];
@@ -88,18 +108,43 @@ const ModelResultsSlider = ({ data }: ModelResultsSliderProps) => {
   };
 
   const formatLinks = (text: string) => {
+    // Format URLs to clickable links
     const urlPattern = /(https?:\/\/[^\s]+)/g;
     return text.replace(urlPattern, (url) => {
       return `<a href="${url}" target="_blank" rel="noopener noreferrer" style="text-decoration: underline;">${url}</a>`;
     });
   };
 
+  const formatBoldText = (text: string) => {
+    let formattedText = text;
+    formattedText = formattedText.replace(
+      /\*\*(.*?)\*\*/g,
+      "<strong>$1</strong>"
+    );
+
+    return formattedText;
+  };
+
   const formatText = (text: string | "") => {
     // Convert text into an array of paragraphs and format
     return text?.split("\n").map((paragraph, index) => {
-      // Handle bullet points
+      // Apply bold formatting first
+      paragraph = formatBoldText(paragraph);
+
+      // Handle bullet points with hyphen (-)
       if (paragraph.startsWith("- ")) {
         const listItem = paragraph.slice(2); // Remove the '- ' prefix
+        return (
+          <li
+            key={index}
+            dangerouslySetInnerHTML={{ __html: formatLinks(listItem) }}
+          />
+        );
+      }
+
+      // Handle bullet points with asterisk (*)
+      if (paragraph.startsWith("* ")) {
+        const listItem = paragraph.slice(2); // Remove the '* ' prefix
         return (
           <li
             key={index}
@@ -178,6 +223,8 @@ const ModelResultsSlider = ({ data }: ModelResultsSliderProps) => {
 
   return (
     <div className="flex flex-col gap-10 sm:block w-full px-5 sm:px-12 py-10 sm:py-20">
+      {showModal && <TrustScoreModal />}
+
       {isMobile ? (
         data.map((response, index) => (
           <div key={index} className="px-2 sm:min-h-[300px]">
@@ -191,6 +238,12 @@ const ModelResultsSlider = ({ data }: ModelResultsSliderProps) => {
                     <div className="flex flex-col items-center justify-center font-bold bg-[#d15700] text-white w-fit text-2xl p-5 rounded-3xl">
                       <h3>Trust Score</h3>
                       <h3>{calculateTrustScore(response)}</h3>
+                      <p
+                        className="text-sm cursor-pointer hover:underline"
+                        onClick={() => setShowModal(true)}
+                      >
+                        What is a trust score?
+                      </p>
                     </div>
                   </div>
                   <p className="mt-4 font-bold mb-4 text-base">
@@ -205,42 +258,28 @@ const ModelResultsSlider = ({ data }: ModelResultsSliderProps) => {
                             citation: string | { uri: string; title: string },
                             citIndex
                           ) => (
-                            <li key={citIndex} className="text-blue-800">
+                            <li
+                              key={citIndex}
+                              className="text-blue-800 hover:underline mb-1"
+                            >
                               {typeof citation === "string" ? (
-                                <>
-                                  <a
-                                    href={
-                                      typeof citation === "string"
-                                        ? citation
-                                        : (citation as { uri: string }).uri
-                                    }
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="cursor-pointer"
-                                  >
-                                    [{citIndex + 1}]
-                                  </a>{" "}
-                                  {typeof citation === "string"
-                                    ? citation
-                                    : (
-                                        citation as {
-                                          uri: string;
-                                          title: string;
-                                        }
-                                      ).title}
-                                </>
+                                <a
+                                  href={citation}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="cursor-pointer inline-block w-full"
+                                >
+                                  [{citIndex + 1}] {citation}
+                                </a>
                               ) : (
-                                <>
-                                  <a
-                                    href={citation.uri}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="cursor-pointer"
-                                  >
-                                    [{citIndex + 1}]
-                                  </a>{" "}
-                                  {citation.title}
-                                </>
+                                <a
+                                  href={citation.uri}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="cursor-pointer inline-block w-full"
+                                >
+                                  [{citIndex + 1}] {citation.title}
+                                </a>
                               )}
                             </li>
                           )
@@ -290,6 +329,12 @@ const ModelResultsSlider = ({ data }: ModelResultsSliderProps) => {
                       <div className="flex flex-col items-center justify-center font-bold bg-[#d15700] text-white w-fit text-2xl p-5 rounded-3xl sm:w-1/3">
                         <h3>Trust Score</h3>
                         <h3>{calculateTrustScore(response)}</h3>
+                        <p
+                          className="text-sm cursor-pointer hover:underline"
+                          onClick={() => setShowModal(true)}
+                        >
+                          What is a trust score?
+                        </p>
                       </div>
                     </div>
                     <p className="mt-4 font-bold mb-4 text-base">
@@ -304,7 +349,10 @@ const ModelResultsSlider = ({ data }: ModelResultsSliderProps) => {
                               citation: string | { uri: string; title: string },
                               citIndex
                             ) => (
-                              <li key={citIndex} className="text-blue-800">
+                              <li
+                                key={citIndex}
+                                className="text-blue-800 hover:underline mb-1"
+                              >
                                 <a
                                   href={
                                     typeof citation === "string"
@@ -313,13 +361,13 @@ const ModelResultsSlider = ({ data }: ModelResultsSliderProps) => {
                                   }
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="cursor-pointer"
+                                  className="cursor-pointer inline-block w-full"
                                 >
-                                  [{citIndex + 1}]
-                                </a>{" "}
-                                {typeof citation === "string"
-                                  ? citation
-                                  : citation.title}
+                                  [{citIndex + 1}]{" "}
+                                  {typeof citation === "string"
+                                    ? citation
+                                    : citation.title}
+                                </a>
                               </li>
                             )
                           )}
