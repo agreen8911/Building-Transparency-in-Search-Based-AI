@@ -44,7 +44,7 @@ const Home = () => {
         setQuestionHistory((prev) => [userQuestion, ...prev.slice(0, 4)]);
       }
 
-      const response = await fetch("http://localhost:5000/api/chat/all", {
+      const response = await fetch(`http://localhost:8000/api/chat/all`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -55,7 +55,6 @@ const Home = () => {
       });
 
       const data = await response.json();
-      console.log("data", data);
       if (!response.ok) {
         throw new Error(data.error || "Failed to fetch response");
       }
@@ -73,15 +72,6 @@ const Home = () => {
     return <div>Error: {error}</div>;
   }
 
-  const fetchingLables = [
-    "brb going to fetch some data lulz...",
-    "dunno if this is gonna work out, but lets see...",
-    "hopefully this works...",
-    "going to see a man about a horse...",
-    "i already know the answer, but going to pretend like I am looking for it...",
-    "you're getting sleepy...you're getting sleepy...",
-  ];
-
   return (
     <div
       className={`min-h-screen ${
@@ -92,11 +82,7 @@ const Home = () => {
         <div className="flex flex-col gap-6 justify-center items-center h-screen">
           <RingLoader color={"#0b5394"} loading={loading} size={70} />
           <p className="text-[#0b5394]">
-            {
-              fetchingLables[
-                Math.floor((Date.now() / 2000) % fetchingLables.length)
-              ]
-            }
+            Fetching data...
           </p>
         </div>
       ) : !data ? (
